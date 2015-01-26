@@ -11,7 +11,7 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.pandacoder.example.animationdigest.R.layout.activity_home);
+        setContentView(com.pandacoder.example.animationdigest.R.layout.home_activity_layout);
 
         if (savedInstanceState == null) {
             getFragmentManager()
