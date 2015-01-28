@@ -6,9 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/intro_loading_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/intro_progress_bar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:indeterminate="false"
+                android:progress="30"
+                android:max="100"
+                android:progressDrawable="@drawable/circlular_blue_progress"
+                style="?android:attr/progressBarStyleHorizontal"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/panda"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Loading..."/>
+    </LinearLayout>
 
 </FrameLayout>
