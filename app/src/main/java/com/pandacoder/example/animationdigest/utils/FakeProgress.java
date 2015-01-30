@@ -29,7 +29,7 @@ public class FakeProgress {
         }
     }
 
-    public final static int PROGRESS_UPDATE_INTERVAL_MS = 100;
+    public final static int PROGRESS_UPDATE_INTERVAL_MS = 12;
 
     private final int mStartProgress;
     private final int mEndProgress;
@@ -37,7 +37,10 @@ public class FakeProgress {
 
     private final Handler mHanler;
 
+    private boolean mTicking;
+    private int mCurrentTimeMs;
     private int mCurrentProgress;
+
     private Runnable mOnProgressRunnable = null;
 
     public FakeProgress(int start, int end, int progressTimeMs) {
@@ -53,7 +56,7 @@ public class FakeProgress {
     }
 
     public boolean isMaxProgressReached() {
-        return mCurrentProgress >= mEndProgress;
+        return mCurrentTimeMs >= mProgressTimeMs;
     }
 
     public void setOnProgressRunnable(Runnable onProgressRunnable) {
@@ -63,10 +66,12 @@ public class FakeProgress {
 
     public void reset() {
         mCurrentProgress = 0;
+        mCurrentTimeMs = 0;
         stop();
     }
 
     public void start() {
+        mTicking = true;
         mUpdateProgressRunnable.run();
     }
 
@@ -75,22 +80,36 @@ public class FakeProgress {
             mHanler.removeCallbacks(mOnProgressRunnable);
         }
         mHanler.removeCallbacks(mUpdateProgressRunnable);
+        mTicking = false;
     }
 
     private final Runnable mUpdateProgressRunnable = new Runnable() {
         @Override
         public void run() {
             updateProgress();
-            mHanler.postDelayed(mUpdateProgressRunnable, PROGRESS_UPDATE_INTERVAL_MS);
+            if (mTicking) {
+                mHanler.postDelayed(mUpdateProgressRunnable, PROGRESS_UPDATE_INTERVAL_MS);
+            }
         }
     };
 
     protected void updateProgress() {
-        float progressInc = (mEndProgress - mStartProgress) * PROGRESS_UPDATE_INTERVAL_MS / mProgressTimeMs;
-        float currentProgress = mCurrentProgress + progressInc;
-        if (currentProgress > mEndProgress) {
-            mCurrentProgress
+        float progress = mStartProgress + (mEndProgress - mStartProgress) * mCurrentTimeMs / mProgressTimeMs;
+        if (progress > mEndProgress) {
+            mCurrentProgress = mEndProgress;
+        } else {
+            mCurrentProgress = (int) progress;
         }
+
+        if (mOnProgressRunnable != null) {
+            mOnProgressRunnable.run();
+        }
+
+        if (mCurrentTimeMs > mProgressTimeMs) {
+            stop();
+        }
+
+        mCurrentTimeMs += PROGRESS_UPDATE_INTERVAL_MS;
     }
 
 }
