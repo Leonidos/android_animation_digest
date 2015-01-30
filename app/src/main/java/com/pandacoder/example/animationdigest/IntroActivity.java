@@ -3,12 +3,10 @@ package com.pandacoder.example.animationdigest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.pandacoder.example.animationdigest.utils.FakeProgress;
 
@@ -29,7 +27,7 @@ public class IntroActivity extends Activity {
 
         mLoadingLayout = findViewById(R.id.intro_loading_layout);
         mProgressBar = (ProgressBar) findViewById(R.id.intro_progress_bar);
-        mLoadingAnim = AnimationUtils.loadAnimation(this, R.anim.pulsation);
+        mLoadingAnim = AnimationUtils.loadAnimation(this, R.anim.intro_loading_pulsation);
 
         int startProgress = (savedInstanceState != null)?savedInstanceState.getInt(STATE_CURRENT_PROGRESS_KEY, 0):0;
         mFakeProgress = new FakeProgress.Builder()
@@ -73,7 +71,7 @@ public class IntroActivity extends Activity {
 
     protected void onLoadedFinished() {
         startActivity(new Intent(this, HomeActivity.class));
-        overridePendingTransition(R.anim.sli.mainfadein,R.anim.splashfadeout);
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
     }
 
     @Override
