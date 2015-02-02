@@ -16,7 +16,7 @@ public class HomeActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             getFragmentManager()
                     .beginTransaction()
-                    .add(R.id.rootView, new HomeFragment())
+                    .add(R.id.rootView, new TutorialFragment())
                     .commit();
         }
     }
